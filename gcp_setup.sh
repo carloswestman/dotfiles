@@ -38,18 +38,19 @@ echo ""
 echo "Setting application default credentials..."
 gcloud auth application-default login
 
-# 5️⃣ Add gcloud to .zshrc if not already present
+# 5️⃣ Add gcloud to .zshrc.local if not already present
 SHELL_INC="${BREW_PREFIX}/share/google-cloud-sdk/path.zsh.inc"
 COMP_INC="${BREW_PREFIX}/share/google-cloud-sdk/completion.zsh.inc"
 
-if ! grep -q "google-cloud-sdk/path.zsh.inc" ~/.zshrc 2>/dev/null; then
-    cat << EOF >> ~/.zshrc
+touch ~/.zshrc.local
+if ! grep -q "google-cloud-sdk/path.zsh.inc" ~/.zshrc.local 2>/dev/null; then
+    cat << EOF >> ~/.zshrc.local
 
 # Google Cloud SDK
 source "${SHELL_INC}"
 source "${COMP_INC}"
 EOF
-    echo "Added gcloud to ~/.zshrc"
+    echo "Added gcloud to ~/.zshrc.local"
 fi
 
 # 6️⃣ Verify setup
