@@ -28,7 +28,7 @@ Machine-specific settings go in `~/.zshrc.local`, secrets go in `~/.secrets` —
 
 ### `dev-tmux.sh`
 
-Launches a tmux session with two windows for daily development, each with a terminal pane (left) and Claude Code (right):
+Launches a tmux session with two windows for daily development, each with a terminal pane (left) and a pane for an AI assistant or other tool (right):
 
 - **phid** — `/Users/carlos/code/phidippus`
 - **saas** — `/Users/carlos/code/rl2`
