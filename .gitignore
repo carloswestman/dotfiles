@@ -1,0 +1,9 @@
+# Credentials and secrets
+.env
+*.pem
+*.key
+credentials*
+*secret*
+
+# macOS
+.DS_Store
