@@ -6,14 +6,21 @@ My opinionated dev environment for macOS, shaped by real-world work with Kuberne
 
 ### `terminal_setup.sh`
 
-One-shot script that installs and configures:
+Idempotent setup script that installs tools and symlinks config files from this repo to your home directory:
 
 - **Homebrew** (package manager)
 - **Oh My Zsh** with Agnoster theme
 - **Zsh plugins**: autosuggestions, syntax highlighting
 - **Hack Nerd Font** (required for Agnoster theme)
 - **tmux** with a custom config (`Ctrl+A` prefix, mouse support, status bar)
-- **Shell aliases** for kubectl and docker
+- **Shell aliases** for kubectl, docker, and ls
+- Symlinks `.zshrc` and `.tmux.conf` from this repo (backs up existing files first)
+
+### `.zshrc` / `.tmux.conf`
+
+Config files tracked in this repo and symlinked to `~` by the setup script. Edit them here, commit, and every machine stays in sync.
+
+Machine-specific settings and secrets go in `~/.zshrc.local` (sourced automatically, not tracked in git).
 
 ### `k8s-tmux.sh`
 
