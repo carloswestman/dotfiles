@@ -16,11 +16,22 @@ Idempotent setup script that installs tools and symlinks config files from this 
 - **Shell aliases** for kubectl, docker, and ls
 - Symlinks `.zshrc` and `.tmux.conf` from this repo (backs up existing files first)
 
-### `.zshrc` / `.tmux.conf`
+### `.zshrc` / `.zprofile` / `.tmux.conf`
 
 Config files tracked in this repo and symlinked to `~` by the setup script. Edit them here, commit, and every machine stays in sync.
 
-Machine-specific settings and secrets go in `~/.zshrc.local` (sourced automatically, not tracked in git).
+- **`.zshrc`** — interactive shell config (plugins, aliases, prompt). Sources `~/.zshrc.local` for machine-specific settings.
+- **`.zprofile`** — login shell config (Homebrew). Sources `~/.secrets` for API keys and tokens.
+- **`.tmux.conf`** — tmux config (`Ctrl+A` prefix, mouse support, status bar).
+
+Machine-specific settings go in `~/.zshrc.local`, secrets go in `~/.secrets` — both are sourced automatically and not tracked in git.
+
+### `dev-tmux.sh`
+
+Launches a tmux session with two windows for daily development, each with a terminal pane (left) and Claude Code (right):
+
+- **phid** — `/Users/carlos/code/phidippus`
+- **saas** — `/Users/carlos/code/rl2`
 
 ### `k8s-tmux.sh`
 
@@ -75,6 +86,10 @@ chmod +x terminal_setup.sh
 ./terminal_setup.sh
 
 # After setup, set your terminal font to "Hack Nerd Font" in iTerm2/Terminal preferences
+
+# Launch dev tmux layout (phid + saas with Claude Code)
+chmod +x dev-tmux.sh
+./dev-tmux.sh
 
 # Launch k8s tmux layout
 chmod +x k8s-tmux.sh

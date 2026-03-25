@@ -4,6 +4,7 @@
 *.key
 credentials*
 *secret*
+*.local
 
 # macOS
 .DS_Store
