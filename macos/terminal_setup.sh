@@ -35,15 +35,25 @@ brew install tmux
 
 # 6️⃣ Symlink config files from repo to home directory
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+REPO_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 
 # Back up existing files (only if they are real files, not already symlinks)
-for file in .zshrc .tmux.conf; do
+for file in .zshrc .zprofile; do
     if [ -f "$HOME/$file" ] && [ ! -L "$HOME/$file" ]; then
         cp "$HOME/$file" "$HOME/${file}.backup.$(date +%Y%m%d%H%M%S)"
         echo "Backed up ~/$file"
     fi
     ln -sf "$SCRIPT_DIR/$file" "$HOME/$file"
     echo "Symlinked ~/$file -> $SCRIPT_DIR/$file"
+done
+
+for file in .tmux.conf; do
+    if [ -f "$HOME/$file" ] && [ ! -L "$HOME/$file" ]; then
+        cp "$HOME/$file" "$HOME/${file}.backup.$(date +%Y%m%d%H%M%S)"
+        echo "Backed up ~/$file"
+    fi
+    ln -sf "$REPO_DIR/shared/$file" "$HOME/$file"
+    echo "Symlinked ~/$file -> $REPO_DIR/shared/$file"
 done
 
 # ✅ Finished

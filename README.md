@@ -1,6 +1,63 @@
-# Terminal Setup
+# Dotfiles
 
-My opinionated dev environment for macOS, shaped by real-world work with Kubernetes, Docker, and cloud infrastructure. These scripts automate the setup so I can get a new machine production-ready fast. Works on both Intel and Apple Silicon Macs.
+My opinionated dev environment for macOS and Ubuntu, shaped by real-world work with Kubernetes, Docker, and cloud infrastructure. These scripts automate the setup so I can get a new machine production-ready fast.
+
+## Structure
+
+```
+dotfiles/
+├── shared/           # Cross-platform configs
+│   ├── .tmux.conf
+│   ├── dev-tmux.sh
+│   ├── k8s-tmux.sh
+│   └── tmux-help.sh
+├── macos/            # macOS-specific (Homebrew-based)
+│   ├── .zshrc
+│   ├── .zprofile
+│   ├── terminal_setup.sh
+│   ├── aws_setup.sh
+│   ├── gcp_setup.sh
+│   ├── terraform_setup.sh
+│   └── github_setup.sh
+├── ubuntu/           # Ubuntu-specific (apt-based)
+│   ├── .zshrc
+│   ├── .zprofile
+│   ├── terminal_setup.sh
+│   ├── aws_setup.sh
+│   ├── gcp_setup.sh
+│   ├── terraform_setup.sh
+│   └── github_setup.sh
+```
+
+## Quick start
+
+### macOS
+
+```bash
+cd macos
+chmod +x *.sh
+./terminal_setup.sh       # Zsh, Oh My Zsh, plugins, tmux, symlinks
+
+# Cloud & infra tools (run as needed)
+./github_setup.sh
+./aws_setup.sh
+./gcp_setup.sh
+./terraform_setup.sh
+```
+
+### Ubuntu
+
+```bash
+cd ubuntu
+chmod +x *.sh
+./terminal_setup.sh       # Zsh, Oh My Zsh, plugins, tmux, symlinks
+
+# Cloud & infra tools (run as needed)
+./github_setup.sh
+./aws_setup.sh
+./gcp_setup.sh
+./terraform_setup.sh
+```
 
 ## What's included
 
@@ -8,111 +65,48 @@ My opinionated dev environment for macOS, shaped by real-world work with Kuberne
 
 Idempotent setup script that installs tools and symlinks config files from this repo to your home directory:
 
-- **Homebrew** (package manager)
-- **Oh My Zsh** with Agnoster theme
+- **Zsh** with **Oh My Zsh** and Agnoster theme
 - **Zsh plugins**: autosuggestions, syntax highlighting
 - **Hack Nerd Font** (required for Agnoster theme)
 - **tmux** with a custom config (`Ctrl+A` prefix, mouse support, status bar)
 - **Shell aliases** for kubectl, docker, and ls
-- Symlinks `.zshrc` and `.tmux.conf` from this repo (backs up existing files first)
+- Symlinks `.zshrc`, `.zprofile`, and `.tmux.conf` (backs up existing files first)
 
-### `.zshrc` / `.zprofile` / `.tmux.conf`
+### Config files
 
-Config files tracked in this repo and symlinked to `~` by the setup script. Edit them here, commit, and every machine stays in sync.
+Tracked in this repo and symlinked to `~` by the setup script. Edit them here, commit, and every machine stays in sync.
 
 - **`.zshrc`** — interactive shell config (plugins, aliases, prompt). Sources `~/.zshrc.local` for machine-specific settings.
-- **`.zprofile`** — login shell config (Homebrew). Sources `~/.secrets` for API keys and tokens.
-- **`.tmux.conf`** — tmux config (`Ctrl+A` prefix, mouse support, status bar).
+- **`.zprofile`** — login shell config. Sources `~/.secrets` for API keys and tokens.
+- **`.tmux.conf`** — tmux config (`Ctrl+A` prefix, mouse support, status bar). Shared across platforms.
 
 Machine-specific settings go in `~/.zshrc.local`, secrets go in `~/.secrets` — both are sourced automatically and not tracked in git.
 
-### `dev-tmux.sh`
+### Tmux scripts (shared/)
 
-Launches a tmux session with two windows for daily development, each with a terminal pane (left) and a pane for an AI assistant or other tool (right):
+- **`dev-tmux.sh`** — Launches a tmux session with two windows for daily development
+- **`k8s-tmux.sh`** — Launches a tmux session with 3 panes for Kubernetes work
+- **`tmux-help.sh`** — Quick reference for tmux keybindings
 
-- **phid** — `/Users/carlos/code/phidippus`
-- **saas** — `/Users/carlos/code/rl2`
+### Cloud & infra setup scripts
 
-### `k8s-tmux.sh`
+Each script installs the CLI tool and walks through authentication:
 
-Launches a tmux session with 3 panes pre-configured for Kubernetes work:
+- **`github_setup.sh`** — GitHub CLI, Git config, SSH key generation
+- **`aws_setup.sh`** — AWS CLI, credentials, connectivity check
+- **`gcp_setup.sh`** — Google Cloud SDK, browser auth, shell completions
+- **`terraform_setup.sh`** — Terraform via tfenv (version manager)
 
-- Pod watcher (`kubectl get pods -w`)
-- Ad-hoc command shell
-- Logs/monitoring pane
+macOS versions use Homebrew, Ubuntu versions use apt.
 
-### `github_setup.sh`
+## Optional tools
 
-Installs GitHub CLI and configures Git + SSH:
-
-- Installs `gh` CLI via Homebrew
-- Configures git name, email, and default branch
-- Generates an ed25519 SSH key (skips if one already exists)
-- Skips key upload if GitHub SSH is already working
-- Authenticates the `gh` CLI
-
-### `aws_setup.sh`
-
-Installs and configures the AWS CLI for single-account usage:
-
-- Installs AWS CLI via Homebrew
-- Runs `aws configure` to set up credentials and default region
-- Verifies connectivity with `aws sts get-caller-identity`
-
-Enables scripting for S3, CloudFront invalidations, and other AWS services.
-
-### `gcp_setup.sh`
-
-Installs and configures the Google Cloud CLI:
-
-- Installs Google Cloud SDK (includes `gcloud`, `bq`, `gsutil`)
-- Authenticates via browser login
-- Sets your default project
-- Adds shell completions to `.zshrc`
-
-### `terraform_setup.sh`
-
-Installs Terraform via **tfenv** (version manager):
-
-- Installs tfenv and the latest Terraform version
-- Lets you switch between Terraform versions per project
-- Uses your existing AWS/GCP credentials automatically
-
-## Usage
-
-```bash
-# Initial setup
-chmod +x terminal_setup.sh
-./terminal_setup.sh
-
-# After setup, set your terminal font to "Hack Nerd Font" in iTerm2/Terminal preferences
-
-# Launch dev tmux layout (phid + saas with Claude Code)
-chmod +x dev-tmux.sh
-./dev-tmux.sh
-
-# Launch k8s tmux layout
-chmod +x k8s-tmux.sh
-./k8s-tmux.sh
-
-# GitHub + cloud & infra tools (run as needed)
-chmod +x github_setup.sh aws_setup.sh gcp_setup.sh terraform_setup.sh
-./github_setup.sh
-./aws_setup.sh
-./gcp_setup.sh
-./terraform_setup.sh
-```
-
-## Optional tools to consider
-
-These aren't included in the setup script to keep things lean, but are worth installing individually if you find yourself needing them:
-
-| Tool | What it does | Install |
-|------|-------------|---------|
-| **k9s** | Terminal UI for Kubernetes clusters | `brew install k9s` |
-| **kubectx + kubens** | Fast context/namespace switching | `brew install kubectx` |
-| **stern** | Multi-pod log tailing | `brew install stern` |
-| **fzf** | Fuzzy finder for shell history and files | `brew install fzf` |
-| **jq** | JSON parsing (great with `kubectl -o json`) | `brew install jq` |
-| **bat** | `cat` with syntax highlighting | `brew install bat` |
-| **Claude Code** | AI coding assistant in the terminal | `npm install -g @anthropic-ai/claude-code` |
+| Tool | What it does | macOS | Ubuntu |
+|------|-------------|-------|--------|
+| **k9s** | Terminal UI for Kubernetes | `brew install k9s` | `snap install k9s` |
+| **kubectx + kubens** | Fast context/namespace switching | `brew install kubectx` | `sudo apt install kubectx` |
+| **stern** | Multi-pod log tailing | `brew install stern` | `brew install stern` |
+| **fzf** | Fuzzy finder for shell history | `brew install fzf` | `sudo apt install fzf` |
+| **jq** | JSON parsing | `brew install jq` | `sudo apt install jq` |
+| **bat** | `cat` with syntax highlighting | `brew install bat` | `sudo apt install bat` |
+| **Claude Code** | AI coding assistant | `npm install -g @anthropic-ai/claude-code` | `npm install -g @anthropic-ai/claude-code` |

@@ -1,5 +1,22 @@
 # Changelog
 
+## 2.0.0 - 2026-03-31
+
+### Changed
+- Restructured repo into `shared/`, `macos/`, and `ubuntu/` directories
+- Moved macOS-specific scripts and dotfiles to `macos/`
+- Moved cross-platform configs (`.tmux.conf`, tmux scripts) to `shared/`
+- Updated `terminal_setup.sh` to symlink from new directory structure
+- Rewrote `README.md` for multi-platform usage
+
+### Added
+- Ubuntu support: `.zshrc`, `.zprofile`, and all setup scripts using apt
+- `ubuntu/terminal_setup.sh` — Zsh, Oh My Zsh, plugins, tmux via apt
+- `ubuntu/github_setup.sh` — GitHub CLI, Git config, SSH key (xclip instead of pbcopy)
+- `ubuntu/aws_setup.sh` — AWS CLI via apt
+- `ubuntu/gcp_setup.sh` — Google Cloud SDK via apt with official repo
+- `ubuntu/terraform_setup.sh` — Terraform via tfenv (git clone)
+
 ## 1.0.0 - 2026-03-24
 
 ### Added
