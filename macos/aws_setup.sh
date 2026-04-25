@@ -4,10 +4,15 @@
 
 echo "=== AWS CLI Setup ==="
 
-# 1️⃣ Install AWS CLI via Homebrew
+# 1️⃣ Install AWS CLI via official installer
+# Avoids Homebrew's awscli bottle, which depends on python@3.14 and has hit
+# pyexpat/libexpat symbol mismatches. Official installer bundles its own Python.
 if ! command -v aws &> /dev/null; then
-    echo "Installing AWS CLI..."
-    brew install awscli
+    echo "Installing AWS CLI via official installer..."
+    PKG="/tmp/AWSCLIV2.pkg"
+    curl -fsSL "https://awscli.amazonaws.com/AWSCLIV2.pkg" -o "$PKG"
+    sudo installer -pkg "$PKG" -target /
+    rm -f "$PKG"
 else
     echo "AWS CLI already installed: $(aws --version)"
 fi
