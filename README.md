@@ -8,6 +8,7 @@ My opinionated dev environment for macOS and Ubuntu, shaped by real-world work w
 dotfiles/
 ├── shared/           # Cross-platform configs
 │   ├── .tmux.conf
+│   ├── starship.toml
 │   ├── dev-tmux.sh
 │   ├── k8s-tmux.sh
 │   └── tmux-help.sh
@@ -65,20 +66,22 @@ chmod +x *.sh
 
 Idempotent setup script that installs tools and symlinks config files from this repo to your home directory:
 
-- **Zsh** with **Oh My Zsh** and Agnoster theme
+- **Zsh** with **Oh My Zsh** (plugins only — prompt is Starship)
+- **Starship** prompt with kubernetes, AWS, GCP, and terraform modules enabled
 - **Zsh plugins**: autosuggestions, syntax highlighting
-- **Hack Nerd Font** (required for Agnoster theme)
+- **Hack Nerd Font** (required for Starship icons)
 - **tmux** with a custom config (`Ctrl+A` prefix, mouse support, status bar)
 - **Shell aliases** for kubectl, docker, and ls
-- Symlinks `.zshrc`, `.zprofile`, and `.tmux.conf` (backs up existing files first)
+- Symlinks `.zshrc`, `.zprofile`, `.tmux.conf`, and `~/.config/starship.toml` (backs up existing files first)
 
 ### Config files
 
 Tracked in this repo and symlinked to `~` by the setup script. Edit them here, commit, and every machine stays in sync.
 
-- **`.zshrc`** — interactive shell config (plugins, aliases, prompt). Sources `~/.zshrc.local` for machine-specific settings.
+- **`.zshrc`** — interactive shell config (plugins, aliases, starship init). Sources `~/.zshrc.local` for machine-specific settings.
 - **`.zprofile`** — login shell config. Sources `~/.secrets` for API keys and tokens.
 - **`.tmux.conf`** — tmux config (`Ctrl+A` prefix, mouse support, status bar). Shared across platforms.
+- **`shared/starship.toml`** — Starship prompt config (kubernetes, AWS, GCP, terraform modules). Symlinked to `~/.config/starship.toml`.
 
 Machine-specific settings go in `~/.zshrc.local`, secrets go in `~/.secrets` — both are sourced automatically and not tracked in git.
 

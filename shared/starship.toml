@@ -1,0 +1,21 @@
+# Starship prompt config — https://starship.rs/config/
+# Symlinked to ~/.config/starship.toml by terminal_setup.sh
+
+add_newline = true
+
+# Show kubernetes context on every prompt (default: disabled)
+[kubernetes]
+disabled = false
+format = '[$symbol$context( \($namespace\))]($style) '
+
+# Show AWS profile / region when set
+[aws]
+format = '[$symbol($profile )(\($region\) )]($style)'
+
+# Show GCP account / project when configured
+[gcloud]
+format = '[$symbol$account(@$domain)(\($project\))]($style) '
+
+# Terraform workspace when in a TF directory
+[terraform]
+format = '[$symbol$workspace]($style) '

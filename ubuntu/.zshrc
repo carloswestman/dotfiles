@@ -1,8 +1,8 @@
 # --------------------
-# Oh My Zsh + Agnoster + Plugins
+# Oh My Zsh + Plugins (prompt is handled by Starship, see bottom of file)
 # --------------------
 export ZSH="$HOME/.oh-my-zsh"
-ZSH_THEME="agnoster"
+ZSH_THEME=""
 plugins=(git)
 
 # Source plugins installed via apt
@@ -29,3 +29,8 @@ setopt append_history
 
 # Source local overrides and secrets (not tracked in git)
 [ -f ~/.zshrc.local ] && source ~/.zshrc.local
+
+# --------------------
+# Starship prompt (must be last)
+# --------------------
+command -v starship >/dev/null && eval "$(starship init zsh)"

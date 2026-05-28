@@ -1,5 +1,14 @@
 # Changelog
 
+## Unreleased
+
+### Changed
+- Replaced Agnoster (Oh My Zsh theme) with Starship prompt on macOS and Ubuntu
+- `terminal_setup.sh` now installs Starship and symlinks `shared/starship.toml` to `~/.config/starship.toml`
+
+### Added
+- `shared/starship.toml` — cross-platform Starship config with kubernetes, AWS, GCP, and terraform modules enabled
+
 ## 2.0.0 - 2026-03-31
 
 ### Changed

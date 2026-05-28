@@ -4,10 +4,10 @@
 eval "$(/opt/homebrew/bin/brew shellenv 2>/dev/null)"
 
 # --------------------
-# Oh My Zsh + Agnoster + Plugins
+# Oh My Zsh + Plugins (prompt is handled by Starship, see bottom of file)
 # --------------------
 export ZSH="$HOME/.oh-my-zsh"
-ZSH_THEME="agnoster"
+ZSH_THEME=""
 plugins=(git)
 
 # Source Homebrew-installed plugins before Oh My Zsh
@@ -43,3 +43,8 @@ setopt append_history
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# --------------------
+# Starship prompt (must be last)
+# --------------------
+command -v starship >/dev/null && eval "$(starship init zsh)"

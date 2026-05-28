@@ -1,6 +1,6 @@
 #!/bin/bash
 # terminal_setup.sh
-# Setup script for Ubuntu desktop: Zsh, Oh My Zsh, Agnoster, plugins, tmux
+# Setup script for Ubuntu desktop: Zsh, Oh My Zsh, Starship, plugins, tmux
 
 # 1. Install Zsh and tmux
 sudo apt update
@@ -23,12 +23,20 @@ fi
 # 4. Install Zsh plugins via apt
 sudo apt install -y zsh-autosuggestions zsh-syntax-highlighting
 
-# 5. Install Nerd Font (Hack)
+# 5. Install Starship prompt (official install script, not in apt)
+if ! command -v starship &> /dev/null; then
+    echo "Installing Starship..."
+    curl -sS https://starship.rs/install.sh | sh -s -- --yes
+else
+    echo "Starship already installed."
+fi
+
+# 6. Install Nerd Font (Hack)
 sudo apt install -y fonts-hack-ttf
 
 echo "Please set your terminal font to Hack Nerd Font in your terminal preferences."
 
-# 6. Symlink config files from repo to home directory
+# 7. Symlink config files from repo to home directory
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 REPO_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 
@@ -49,6 +57,15 @@ for file in .tmux.conf; do
     ln -sf "$REPO_DIR/shared/$file" "$HOME/$file"
     echo "Symlinked ~/$file -> $REPO_DIR/shared/$file"
 done
+
+# Starship config (lives in ~/.config/starship.toml)
+mkdir -p "$HOME/.config"
+if [ -f "$HOME/.config/starship.toml" ] && [ ! -L "$HOME/.config/starship.toml" ]; then
+    cp "$HOME/.config/starship.toml" "$HOME/.config/starship.toml.backup.$(date +%Y%m%d%H%M%S)"
+    echo "Backed up ~/.config/starship.toml"
+fi
+ln -sf "$REPO_DIR/shared/starship.toml" "$HOME/.config/starship.toml"
+echo "Symlinked ~/.config/starship.toml -> $REPO_DIR/shared/starship.toml"
 
 echo "Terminal setup finished! Log out and back in, then: source ~/.zshrc"
 echo "Start a new tmux session with: tmux new -s dev"
