@@ -5,9 +5,12 @@
 ### Changed
 - Replaced Agnoster (Oh My Zsh theme) with Starship prompt on macOS and Ubuntu
 - `terminal_setup.sh` now installs Starship and symlinks `shared/starship.toml` to `~/.config/starship.toml`
+- `terminal_setup.sh` now installs Neovim + LazyVim deps (ripgrep, fd, lazygit on macOS) and symlinks `shared/nvim/` to `~/.config/nvim`
+- Ubuntu: Neovim is pulled from the official `ppa:neovim-ppa/stable` PPA (apt ships older versions incompatible with LazyVim)
 
 ### Added
 - `shared/starship.toml` — cross-platform Starship config with kubernetes, AWS, GCP, and terraform modules enabled
+- `shared/nvim/` — LazyVim starter vendored into the repo; `lazy-lock.json` tracked for reproducible plugin versions
 
 ## 2.0.0 - 2026-03-31
 

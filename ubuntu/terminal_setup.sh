@@ -1,6 +1,6 @@
 #!/bin/bash
 # terminal_setup.sh
-# Setup script for Ubuntu desktop: Zsh, Oh My Zsh, Starship, plugins, tmux
+# Setup script for Ubuntu desktop: Zsh, Oh My Zsh, Starship, plugins, tmux, Neovim (LazyVim)
 
 # 1. Install Zsh and tmux
 sudo apt update
@@ -36,7 +36,23 @@ sudo apt install -y fonts-hack-ttf
 
 echo "Please set your terminal font to Hack Nerd Font in your terminal preferences."
 
-# 7. Symlink config files from repo to home directory
+# 7. Neovim + LazyVim deps
+# LazyVim requires nvim >= 0.9, which is newer than older Ubuntu apt versions,
+# so use the official stable PPA to get a recent build.
+if ! command -v nvim &> /dev/null; then
+    echo "Installing Neovim from official PPA..."
+    sudo add-apt-repository -y ppa:neovim-ppa/stable
+    sudo apt update
+    sudo apt install -y neovim
+else
+    echo "Neovim already installed."
+fi
+
+# ripgrep + fd for Telescope; lazygit is optional and not in default apt
+# (install separately if you want the <leader>gg git UI).
+sudo apt install -y ripgrep fd-find
+
+# 8. Symlink config files from repo to home directory
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 REPO_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 
@@ -67,5 +83,14 @@ fi
 ln -sf "$REPO_DIR/shared/starship.toml" "$HOME/.config/starship.toml"
 echo "Symlinked ~/.config/starship.toml -> $REPO_DIR/shared/starship.toml"
 
+# Neovim config (lives in ~/.config/nvim, points at the LazyVim starter we vendor)
+if [ -e "$HOME/.config/nvim" ] && [ ! -L "$HOME/.config/nvim" ]; then
+    mv "$HOME/.config/nvim" "$HOME/.config/nvim.backup.$(date +%Y%m%d%H%M%S)"
+    echo "Backed up existing ~/.config/nvim"
+fi
+ln -sfn "$REPO_DIR/shared/nvim" "$HOME/.config/nvim"
+echo "Symlinked ~/.config/nvim -> $REPO_DIR/shared/nvim"
+
 echo "Terminal setup finished! Log out and back in, then: source ~/.zshrc"
 echo "Start a new tmux session with: tmux new -s dev"
+echo "Run 'nvim' once to let LazyVim install its plugins (first run takes ~30s)."

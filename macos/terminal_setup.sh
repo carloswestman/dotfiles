@@ -1,6 +1,6 @@
 #!/bin/bash
 # terminal_setup.sh
-# Setup script for iMac terminal: Zsh, Oh My Zsh, Starship, plugins, tmux
+# Setup script for iMac terminal: Zsh, Oh My Zsh, Starship, plugins, tmux, Neovim (LazyVim)
 
 # 1️⃣ Homebrew install (if not installed)
 if ! command -v brew &> /dev/null; then
@@ -36,7 +36,10 @@ echo "Please set your terminal font to Hack Nerd Font in iTerm2/Terminal"
 # 6️⃣ tmux installation
 brew install tmux
 
-# 7️⃣ Symlink config files from repo to home directory
+# 7️⃣ Neovim + LazyVim deps (ripgrep, fd for telescope; lazygit for git UI)
+brew install neovim ripgrep fd lazygit
+
+# 8️⃣ Symlink config files from repo to home directory
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 REPO_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 
@@ -68,6 +71,15 @@ fi
 ln -sf "$REPO_DIR/shared/starship.toml" "$HOME/.config/starship.toml"
 echo "Symlinked ~/.config/starship.toml -> $REPO_DIR/shared/starship.toml"
 
+# Neovim config (lives in ~/.config/nvim, points at the LazyVim starter we vendor)
+if [ -e "$HOME/.config/nvim" ] && [ ! -L "$HOME/.config/nvim" ]; then
+    mv "$HOME/.config/nvim" "$HOME/.config/nvim.backup.$(date +%Y%m%d%H%M%S)"
+    echo "Backed up existing ~/.config/nvim"
+fi
+ln -sfn "$REPO_DIR/shared/nvim" "$HOME/.config/nvim"
+echo "Symlinked ~/.config/nvim -> $REPO_DIR/shared/nvim"
+
 # ✅ Finished
 echo "Terminal setup script finished! Reload Zsh with: source ~/.zshrc"
 echo "Start a new tmux session with: tmux new -s dev"
+echo "Run 'nvim' once to let LazyVim install its plugins (first run takes ~30s)."

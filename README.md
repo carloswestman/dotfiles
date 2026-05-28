@@ -9,6 +9,7 @@ dotfiles/
 ├── shared/           # Cross-platform configs
 │   ├── .tmux.conf
 │   ├── starship.toml
+│   ├── nvim/         # LazyVim-based Neovim config
 │   ├── dev-tmux.sh
 │   ├── k8s-tmux.sh
 │   └── tmux-help.sh
@@ -71,8 +72,9 @@ Idempotent setup script that installs tools and symlinks config files from this 
 - **Zsh plugins**: autosuggestions, syntax highlighting
 - **Hack Nerd Font** (required for Starship icons)
 - **tmux** with a custom config (`Ctrl+A` prefix, mouse support, status bar)
+- **Neovim** with the **LazyVim** distribution (LSP, Telescope, treesitter, completion) + `ripgrep`, `fd`, `lazygit`
 - **Shell aliases** for kubectl, docker, and ls
-- Symlinks `.zshrc`, `.zprofile`, `.tmux.conf`, and `~/.config/starship.toml` (backs up existing files first)
+- Symlinks `.zshrc`, `.zprofile`, `.tmux.conf`, `~/.config/starship.toml`, and `~/.config/nvim` (backs up existing files first)
 
 ### Config files
 
@@ -82,6 +84,7 @@ Tracked in this repo and symlinked to `~` by the setup script. Edit them here, c
 - **`.zprofile`** — login shell config. Sources `~/.secrets` for API keys and tokens.
 - **`.tmux.conf`** — tmux config (`Ctrl+A` prefix, mouse support, status bar). Shared across platforms.
 - **`shared/starship.toml`** — Starship prompt config (kubernetes, AWS, GCP, terraform modules). Symlinked to `~/.config/starship.toml`.
+- **`shared/nvim/`** — Neovim config based on the LazyVim starter. Symlinked to `~/.config/nvim`. `lazy-lock.json` is tracked for reproducible plugin versions. First run takes ~30s while plugins install.
 
 Machine-specific settings go in `~/.zshrc.local`, secrets go in `~/.secrets` — both are sourced automatically and not tracked in git.
 
