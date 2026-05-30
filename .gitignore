@@ -8,3 +8,8 @@ credentials*
 
 # macOS
 .DS_Store
+
+# Editor swap/temp files
+*.swp
+*.swo
+*~

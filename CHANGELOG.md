@@ -10,7 +10,14 @@
 
 ### Added
 - `shared/starship.toml` — cross-platform Starship config with kubernetes, AWS, GCP, and terraform modules enabled
+- Catppuccin Mocha palette in `shared/starship.toml` for consistent colors across terminals
 - `shared/nvim/` — LazyVim starter vendored into the repo; `lazy-lock.json` tracked for reproducible plugin versions
+- `shared/nvim/lua/plugins/colorscheme.lua` — sets `catppuccin-mocha` as the default LazyVim colorscheme
+- `shared/nvim/lua/plugins/dashboard.lua` — disables the LazyVim startup dashboard (opens straight to empty buffer)
+- `*.swp` / `*.swo` / `*~` ignored in `.gitignore` (vim swap files)
+
+### Tweaked
+- Starship: hid `docker_context` (always shows OrbStack — noise) and trimmed AWS module to show profile only (no region) and only when `AWS_PROFILE` is set
 
 ## 2.0.0 - 2026-03-31
 
